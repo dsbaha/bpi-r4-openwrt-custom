@@ -11,16 +11,21 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - 
-        name: Build and push
+        name: Build Docker Image
         uses: docker/build-push-action@v6
         with:
+          context: .
+          file: ./Dockerfile
+          tags: bpi-r4-openwrt-custom:latest
+          load: true
           push: false
+      -
+        name: Run container and generate artifacts
+        run: |
+          docker run --rm -v ${{ github.workspace }}/artifacts:/app/output bpi-r4-openwrt-custom:latest && cp -R /workdir/openwrt/bin/* /app/output
       -
         name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: workspace_artifacts
-          path: /workdir/openwrt/bin/
+          path: ${{ github.workspace }}/artifacts
