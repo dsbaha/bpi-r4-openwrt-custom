@@ -22,7 +22,7 @@ jobs:
       -
         name: Run container and generate artifacts
         run: |
-          docker run --rm -v ${{ github.workspace }}/artifacts:/app/output bpi-r4-openwrt-custom:latest && cp -R /workdir/openwrt/bin /app/output
+          docker run --rm -v ${{ github.workspace }}/artifacts:/app/output bpi-r4-openwrt-custom:latest cp -R /workdir/openwrt/bin /app/output
       -
         name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
