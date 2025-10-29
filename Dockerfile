@@ -14,3 +14,7 @@ COPY openwrt /workdir/openwrt
 ENV FORCE_UNSAFE_CONFIGURE=1
 ENV NO_JEVENTS=1
 RUN make defconfig && make -j$(nproc)
+
+FROM compile-image
+WORKDIR /workdir/openwrt
+COPY --from=openwrt-builder /workdir/openwrt/bin/ /workdir/openwrt/bin/
