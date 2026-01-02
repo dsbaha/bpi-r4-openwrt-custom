@@ -1,0 +1,76 @@
+name: build bpi r4 openwrt 25.12 with patches
+
+on: [push]
+
+env:
+  NO_JEVENTS: "1"
+  FORCE_UNSAFE_CONFIGURE: "1"
+  CONFIG_DEVEL: "y"
+  CONFIG_CCACHE: "y"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # install deps
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-setuptools rsync swig unzip zlib1g-dev file wget curl zstd libcurl4-openssl-dev nano vim ccache
+      # pull project
+      - name: Checkout project
+        uses: actions/checkout@v4
+      # pull openwrt
+      - name: Checkout OpenWRT
+        uses: actions/checkout@v4
+        with:
+          repository: openwrt/openwrt
+          ref: openwrt-25.12
+          path: openwrt-build-dir
+      # pull luci-temp-app
+      - name: Checkout Luci Temp App
+        uses: actions/checkout@v4
+        with:
+          repository: gSpotx2f/luci-app-temp-status
+          ref: master
+          path: openwrt-build-dir/package/app/luci-app-temp-status
+      # cache ccache
+      - name: Cache ccache
+        uses: actions/cache@v4
+        with:
+          path: openwrt-build-dir/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('openwrt-build-dir/.ccache/tmp/*') }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+      - name: apply patches and config
+        run: |
+          cp -vR ${{ github.workspace}}/* ${{ github.workspace }}/openwrt-build-dir
+      # openwrt feeds udpate and install
+      - name: openwrt feeds update and install
+        run: |
+          ls -l
+          cd ${{ github.workspace }}/openwrt-build-dir
+          ${{ github.workspace }}/openwrt-build-dir/scripts/feeds update -a
+          ${{ github.workspace }}/openwrt-build-dir/scripts/feeds install -a
+      # build host tools
+      - name: build host tools
+        run: |
+          cd ${{ github.workspace }}/openwrt-build-dir
+          make -j$(nproc) tools/compile
+      # build host toolchain
+      - name: build host toolchain
+        run: |
+          cd ${{ github.workspace }}/openwrt-build-dir
+          make -j$(nproc) toolchain/compile
+      # build everything else
+      - name: build custom openwrt
+        run: |
+          cd ${{ github.workspace }}/openwrt-build-dir
+          make -j$(nproc)
+      # releases action
+      - name: upload release
+        uses: akkuman/gitea-release-action@v1
+        with:
+          files: |-
+            openwrt-build-dir/bin/targets/mediatek/filogic/*.itb
+            openwrt-build-dir/bin/targets/mediatek/filogic/*.gz
