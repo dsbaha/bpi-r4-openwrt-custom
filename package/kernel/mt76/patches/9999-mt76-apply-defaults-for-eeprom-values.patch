@@ -1,0 +1,11 @@
+--- a/mt7996/eeprom.c	2025-08-24 02:21:15.022222587 +0000
++++ b/mt7996/eeprom.c	2025-08-24 02:21:42.347157694 +0000
+@@ -213,7 +213,7 @@
+ 			}
+ 		}
+ 	}
+-
++	use_default = true;
+ out:
+ 	return mt7996_eeprom_check_or_use_default(dev, use_default);
+ }

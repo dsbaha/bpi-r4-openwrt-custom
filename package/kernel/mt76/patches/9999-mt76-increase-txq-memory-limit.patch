@@ -1,0 +1,10 @@
+--- a/mt7996/init.c	2025-08-24 02:23:31.083056911 +0000
++++ b/mt7996/init.c	2025-08-24 02:32:45.619385687 +0000
+@@ -494,6 +494,7 @@
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 
+ 	hw->max_tx_fragments = 4;
++	wiphy->txq_memory_limit = 32 << 20; /* 32 MiB */
+ 
+ 	/* init led callbacks */
+ 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {

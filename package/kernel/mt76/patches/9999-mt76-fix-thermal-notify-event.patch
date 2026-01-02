@@ -1,0 +1,21 @@
+--- a/mt7996/mcu.c	2025-08-14 16:41:00.000000000 +0000
++++ b/mt7996/mcu.c	2025-08-24 02:19:07.659525502 +0000
+@@ -598,8 +598,7 @@
+ static void
+ mt7996_mcu_rx_thermal_notify(struct mt7996_dev *dev, struct sk_buff *skb)
+ {
+-#define THERMAL_NOTIFY_TAG 0x4
+-#define THERMAL_NOTIFY 0x2
++#define THERMAL_NOTIFY_TAG 0x6
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
+ 	struct mt7996_mcu_thermal_notify *n;
+ 	struct mt7996_phy *phy;
+@@ -609,7 +608,7 @@
+ 	if (le16_to_cpu(n->tag) != THERMAL_NOTIFY_TAG)
+ 		return;
+ 
+-	if (n->event_id != THERMAL_NOTIFY)
++	if (n->event_id != THERMAL_NOTIFY_TAG)
+ 		return;
+ 
+ 	if (n->band_idx > MT_BAND2)
