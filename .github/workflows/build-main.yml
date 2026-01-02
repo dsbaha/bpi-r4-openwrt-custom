@@ -68,7 +68,7 @@ jobs:
       - name: build custom openwrt
         run: |
           cd ${{ github.workspace }}/openwrt-build-dir
-          make -j$(nproc)
+          make -j$(nproc) || make V=sc
       # releases action
       - name: upload release
         uses: akkuman/gitea-release-action@v1
