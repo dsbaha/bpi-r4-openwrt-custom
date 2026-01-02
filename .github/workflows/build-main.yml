@@ -44,7 +44,9 @@ jobs:
             ${{ runner.os }}-ccache-
       - name: apply patches and config
         run: |
-          cp -vR ${{ github.workspace}}/* ${{ github.workspace }}/openwrt-build-dir
+          cp -vR ${{ github.workspace }}/package ${{ github.workspace }}/openwrt-build-dir
+          cp -vR ${{ github.workspace }}/target ${{ github.workspace }}/openwrt-build-dir
+          cp -vR ${{ github.workspace }}/kernel-config ${{ github.workspace }}/openwrt-build-dir/.config
       # openwrt feeds udpate and install
       - name: openwrt feeds update and install
         run: |
