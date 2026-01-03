@@ -84,11 +84,12 @@ jobs:
           cd ${{ github.workspace }}/openwrt-build-dir
           make -j$(nproc) || make V=sc
       # releases action
-      - name: Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload binaries to release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          tag_name: 'v${{ env.GITHUB_SHA }}'
-          name: 'OpenWRT Custom v${{ env.GITHUB_SHA }}'        
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          title: "OpenWRT Custom ${{ env.GITHUB_SHA }}"
           files: |
             openwrt-build-dir/bin/targets/mediatek/filogic/*.itb
             openwrt-build-dir/bin/targets/mediatek/filogic/*.gz
