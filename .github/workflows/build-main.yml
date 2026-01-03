@@ -18,9 +18,6 @@ jobs:
           android: true
           dotnet: true
           haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
       # install deps
       - name: Install deps
         run: |
@@ -88,6 +85,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: false
           title: "OpenWRT Custom ${{ env.GITHUB_SHA }}"
           files: |
