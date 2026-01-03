@@ -84,3 +84,9 @@ jobs:
           cd ${{ github.workspace }}/openwrt-build-dir
           make -j$(nproc) || make V=sc
       # releases action
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            openwrt-build-dir/bin/targets/mediatek/filogic/*.itb
+            openwrt-build-dir/bin/targets/mediatek/filogic/*.gz
