@@ -60,11 +60,6 @@ jobs:
           cd ${{ github.workspace }}/openwrt-build-dir
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds update -a
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds install -a
-      # make defconfig
-      - name: make defconfig
-        run: |
-          cd ${{ github.workspace }}/openwrt-build-dir
-          make defconfig
       # build host tools
       - name: build host tools
         run: |
@@ -79,6 +74,7 @@ jobs:
       - name: build custom openwrt
         run: |
           cd ${{ github.workspace }}/openwrt-build-dir
+          make defconfig
           make -j$(nproc) || make V=sc
       # releases action
       - name: Upload binaries to release
