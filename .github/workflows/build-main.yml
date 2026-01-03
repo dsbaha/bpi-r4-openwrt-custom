@@ -63,6 +63,11 @@ jobs:
           cd ${{ github.workspace }}/openwrt-build-dir
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds update -a
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds install -a
+      # make defconfig
+      - name: make defconfig
+        run: |
+          cd ${{ github.workspace }}/openwrt-build-dir
+          make defconfig
       # build host tools
       - name: build host tools
         run: |
@@ -79,9 +84,3 @@ jobs:
           cd ${{ github.workspace }}/openwrt-build-dir
           make -j$(nproc) || make V=sc
       # releases action
-      - name: upload release
-        uses: akkuman/gitea-release-action@v1
-        with:
-          files: |-
-            openwrt-build-dir/bin/targets/mediatek/filogic/*.itb
-            openwrt-build-dir/bin/targets/mediatek/filogic/*.gz
