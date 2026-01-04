@@ -62,8 +62,7 @@ jobs:
       - name: make defconfig
         run: |
           cd ${{ github.workspace }}/openwrt-build-dir
-          cp -vR ${{ github.workspace }}/kernel-config ${{ github.workspace }}/openwrt-build-dir/.config
-          chmod +h .config
+          cp -vR ${{ github.workspace }}/kernel-config .config
           make defconfig
           cat .config
       # build host tools
