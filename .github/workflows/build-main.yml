@@ -62,10 +62,6 @@ jobs:
       - name: copy config
         run: |
           cp -v ${{ github.workspace }}/kernel-config ${{ github.workspace }}/openwrt-build-dir/.config
-          cd ${{ github.workspace }}/openwrt-build-dir
-          cat .config
-          yes "" | make oldconfig
-          cat .config
       # build host tools
       - name: build host tools
         run: |
