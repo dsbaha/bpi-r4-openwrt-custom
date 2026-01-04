@@ -63,7 +63,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/openwrt-build-dir
           cp -vR ${{ github.workspace }}/kernel-config .config
-          make oldconfig
+          yes "" | make oldconfig
           cat .config
       # build host tools
       - name: build host tools
