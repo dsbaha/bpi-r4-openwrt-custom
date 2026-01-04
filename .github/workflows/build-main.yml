@@ -52,7 +52,12 @@ jobs:
         run: |
           cp -vR ${{ github.workspace }}/package ${{ github.workspace }}/openwrt-build-dir
           cp -vR ${{ github.workspace }}/target ${{ github.workspace }}/openwrt-build-dir
+      # olddefconfig
+      - name: olddefconfig
+        run: |
           cp -vR ${{ github.workspace }}/kernel-config ${{ github.workspace }}/openwrt-build-dir/.config
+          cd ${{ github.workspace }}/openwrt-build-dir
+          make olddefconfig
       # openwrt feeds udpate and install
       - name: openwrt feeds update and install
         run: |
@@ -74,7 +79,6 @@ jobs:
       - name: build custom openwrt
         run: |
           cd ${{ github.workspace }}/openwrt-build-dir
-          make defconfig
           make -j$(nproc) || make V=sc
       # releases action
       - name: Upload binaries to release
