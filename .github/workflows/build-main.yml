@@ -52,16 +52,17 @@ jobs:
         run: |
           cp -vR ${{ github.workspace }}/package ${{ github.workspace }}/openwrt-build-dir
           cp -vR ${{ github.workspace }}/target ${{ github.workspace }}/openwrt-build-dir
-      # olddefconfig
-      - name: olddefconfig
+      # make defconfig
+      - name: make defconfig
         run: |
           cp -vR ${{ github.workspace }}/kernel-config ${{ github.workspace }}/openwrt-build-dir/.config
           cd ${{ github.workspace }}/openwrt-build-dir
-          make olddefconfig
+          pwd
+          cat .config
+          make defconfig
       # openwrt feeds udpate and install
       - name: openwrt feeds update and install
         run: |
-          ls -l
           cd ${{ github.workspace }}/openwrt-build-dir
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds update -a
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds install -a
