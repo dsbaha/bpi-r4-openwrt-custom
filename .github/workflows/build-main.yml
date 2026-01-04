@@ -58,14 +58,10 @@ jobs:
           cd ${{ github.workspace }}/openwrt-build-dir
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds update -a
           ${{ github.workspace }}/openwrt-build-dir/scripts/feeds install -a
-      # make defconfig
-      - name: make oldconfig
+      # copy config
+      - name: copy config
         run: |
-          cd ${{ github.workspace }}/openwrt-build-dir
-          make defconfig
-          cat ${{ github.workspace }}/kernel-config >> .config
-          make defconfig
-          cat .config
+          cp -v ${{ github.workspace }}/kernel-config ${{ github.workspace }}/openwrt-build-dir/.config
       # build host tools
       - name: build host tools
         run: |
